@@ -10,9 +10,34 @@
 
 		public function getAllStudent() 
 	    { 
+	    	$allStudents = [];
 	        $query = "SELECT * FROM student"; 
 	        $data = $this->connection->query($query);
-	        return $data;
+	        while ($s = $data->fetch_assoc()) {
+		        $allStudents[$s['id']]['id'] = $s['id'];
+		        $allStudents[$s['id']]['name'] = $s['name'];
+		        $allStudents[$s['id']]['class'] = $s['class'];
+		        $allStudents[$s['id']]['phone'] = $s['phone'];
+		        $allStudents[$s['id']]['gender'] = $s['gender'];
+		        $allStudents[$s['id']]['email'] = $s['email'];
+	        }
+	        return $allStudents;
+	    }
+
+	    public function getStudentById($ids) 
+	    { 
+	    	$allStudents = [];
+	        $query = "SELECT * FROM student WHERE id IN({$ids})";
+	        $data = $this->connection->query($query);
+	        while ($s = $data->fetch_assoc()) {
+		        $allStudents[$s['id']]['id'] = $s['id'];
+		        $allStudents[$s['id']]['name'] = $s['name'];
+		        $allStudents[$s['id']]['class'] = $s['class'];
+		        $allStudents[$s['id']]['phone'] = $s['phone'];
+		        $allStudents[$s['id']]['gender'] = $s['gender'];
+		        $allStudents[$s['id']]['email'] = $s['email'];
+	        }
+	        return $allStudents;
 	    }
 
 	    public function insertStudent($data)
