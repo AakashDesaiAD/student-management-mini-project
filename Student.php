@@ -1,5 +1,6 @@
 <?php
 	include 'DbConnection.php';
+	include 'Grade.php';
 
 	class Student extends DbConnection
 	{
@@ -42,6 +43,9 @@
 
 	    public function insertStudent($data)
 	    {
+	    	$grade = new Grade();
+	    	$gradeData = [];
+
 	    	$response = [];
 	    	$name = $data['studentName'];
 	    	$stClass = $data['studentClass'];
@@ -52,7 +56,12 @@
 	    	$sql = "INSERT INTO student (id, name, class, phone, gender, email) VALUES (NULL, '{$name}', '{$stClass}', '{$phone}', '{$gender}', '{$email}')";
 
 	    	if ($this->connection->query($sql) === TRUE) {
-	    		$response['status'] = true;
+		    	$gradeData['student_id'] = $this->connection->insert_id;
+		    	$gradeData['chemistry'] = 'N';
+		    	$gradeData['maths'] = 'N';
+		    	$gradeData['physics'] = 'N';
+
+		    	$response['status'] = $grade->insertGrade($gradeData);
 	    	} else {
 	    		$response['status'] = false;
 	    		$response['log'] = $this->connection->error;
