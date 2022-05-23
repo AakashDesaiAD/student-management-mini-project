@@ -42,23 +42,27 @@
 		</div>
 		<div class="my-4">
 			<form action="updateGrade.php" method="POST">
-				<table class="table">
+				<table class="table table-bordered ">
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Grade</th>
-						<th>Action</th>
 					</tr>
 					<?php foreach($studentData as $key => $s) { ?>
-					<tr>
+					<tr id="subject-div-<?=$s['id'] ?>">
 						<td><?=$s['id'] ?></td>
 						<td class="d-flex flex-column">
 							<?=$s['name'] ?>
 							<span class="btn btn-primary" style="width:max-content" data-toggle="modal" data-target="#subjectFilter-<?=$s['id'] ?>">Select subject</span>
 						</td>
-						<td id="subject-div-<?=$s['id'] ?>">-</td>
 						<td>
-							<span class="btn btn-danger">Remove</button>
+							<span class="y-1">
+								<input type="radio"> G
+								<input type="radio"> V
+								<input type="radio"> E
+								<input type="radio"> A
+								<input type="radio"> F
+							</span>
 						</td>
 					</tr>
 					<?php } ?>
@@ -214,7 +218,7 @@
 				    method: "POST",
 				    data: $(this).serialize(),
 				    success: function (response) {
-						$("#subject-div-<?=$s['id'] ?>").html(response)
+						$("#subject-div-<?=$s['id']?>").after(response)
 				    }
 				});
 			});

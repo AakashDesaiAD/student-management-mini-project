@@ -5,45 +5,56 @@
 
 	if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		if ( array_key_exists('subjectFilter', $_POST) ) {
-			$response = "<ul>";
+			$response = '';
 			if ($_POST['chemistry']) {
-				$response .= '<li>Chemistry &nbsp; : -
-									<span class="y-1">
-										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="G"> G
-										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="V"> V
-										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="E"> E
-										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="A"> A
-										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="F"> F
-									</span>
-								</li>';
+				$response .= '<tr>
+					<td>A</td>
+					<td>Chemistry</td>
+					<td>
+						<span class="y-1">
+							<input type="radio" name="chemistry['.$_POST["studentId"].']" value="G"> G
+							<input type="radio" name="chemistry['.$_POST["studentId"].']" value="V"> V
+							<input type="radio" name="chemistry['.$_POST["studentId"].']" value="E"> E
+							<input type="radio" name="chemistry['.$_POST["studentId"].']" value="A"> A
+							<input type="radio" name="chemistry['.$_POST["studentId"].']" value="F"> F
+						</span>
+					</td>
+				</tr>';
 			}
 
 			if($_POST['maths']) {
-				$response .= '<li>Maths &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : -
-									<span class="y-1">
-										<input type="radio" name="maths['.$_POST["studentId"].']" value="G"> G
-										<input type="radio" name="maths['.$_POST["studentId"].']" value="V"> V
-										<input type="radio" name="maths['.$_POST["studentId"].']" value="E"> E
-										<input type="radio" name="maths['.$_POST["studentId"].']" value="A"> A
-										<input type="radio" name="maths['.$_POST["studentId"].']" value="F"> F
-									</span>
-								</li>';
+				$response .= '<tr>
+					<td>B</td>
+					<td>Maths</td>
+					<td>
+						<span class="y-1">
+							<input type="radio" name="maths['.$_POST["studentId"].']" value="G"> G
+							<input type="radio" name="maths['.$_POST["studentId"].']" value="V"> V
+							<input type="radio" name="maths['.$_POST["studentId"].']" value="E"> E
+							<input type="radio" name="maths['.$_POST["studentId"].']" value="A"> A
+							<input type="radio" name="maths['.$_POST["studentId"].']" value="F"> F
+						</span>
+					</td>
+				</tr>';
 			}
 
 			
 			if($_POST['physics']) {
-				$response .= '<li>Physics &nbsp;&nbsp;&nbsp;&nbsp; : -
-									<span class="y-1">
-										<input type="radio" name="physics['.$_POST["studentId"].']" value="G"> G
-										<input type="radio" name="physics['.$_POST["studentId"].']" value="V"> V
-										<input type="radio" name="physics['.$_POST["studentId"].']" value="E"> E
-										<input type="radio" name="physics['.$_POST["studentId"].']" value="A"> A
-										<input type="radio" name="physics['.$_POST["studentId"].']" value="F"> F
-									</span>
-								</li>';
+				$response .= '<tr>
+					<td>C</td>
+					<td>Physics</td>
+					<td>
+						<span class="y-1">
+							<input type="radio" name="physics['.$_POST["studentId"].']" value="G"> G
+							<input type="radio" name="physics['.$_POST["studentId"].']" value="V"> V
+							<input type="radio" name="physics['.$_POST["studentId"].']" value="E"> E
+							<input type="radio" name="physics['.$_POST["studentId"].']" value="A"> A
+							<input type="radio" name="physics['.$_POST["studentId"].']" value="F"> F
+						</span>
+					</td>
+				</tr>';
 			}
 
-			$response .= "</ul>";
 			echo $response;
 		} else if ( array_key_exists('saveGrade', $_POST) ) {
 			$response = $grade->updateGrade($_POST);
