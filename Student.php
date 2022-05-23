@@ -22,6 +22,7 @@
 		        $allStudents[$s['id']]['gender'] = $s['gender'];
 		        $allStudents[$s['id']]['email'] = $s['email'];
 	        }
+	        $data->free();
 	        return $allStudents;
 	    }
 
@@ -38,6 +39,7 @@
 		        $allStudents[$s['id']]['gender'] = $s['gender'];
 		        $allStudents[$s['id']]['email'] = $s['email'];
 	        }
+	        $data->free();
 	        return $allStudents;
 	    }
 

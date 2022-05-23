@@ -57,11 +57,11 @@
 						</td>
 						<td>
 							<span class="y-1">
-								<input type="radio"> G
-								<input type="radio"> V
-								<input type="radio"> E
-								<input type="radio"> A
-								<input type="radio"> F
+								<input type="radio" name="student_grade[<?=$s['id']?>]" value="G"> G
+								<input type="radio" name="student_grade[<?=$s['id']?>]" value="V"> V
+								<input type="radio" name="student_grade[<?=$s['id']?>]" value="E"> E
+								<input type="radio" name="student_grade[<?=$s['id']?>]" value="A"> A
+								<input type="radio" name="student_grade[<?=$s['id']?>]" value="F"> F
 							</span>
 						</td>
 					</tr>

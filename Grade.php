@@ -17,6 +17,7 @@
 	        	$grades[$g['id']]['maths'] = $g['maths'];
 	        	$grades[$g['id']]['physics'] = $g['physics'];
 	        }
+	        $data->free();
 	        return $grades;
 	    }
 
@@ -74,6 +75,20 @@
 				}
 			}
 			return $log;
+	    }
+
+	   	public function saveStudentGrade($data)
+	    {	
+	    	$response = [];
+	    	foreach ($data as $id => $grade) {
+				$sql = "UPDATE student SET grade = '{$grade}' WHERE id = {$id}";
+				if ($this->connection->query($sql) == TRUE) {
+					$response[$id] = "Success";
+				} else {
+					$response[$id] = $this->connection->error;
+				}
+	    	}
+	    	return $response;
 	    }
 	}
 ?>

@@ -57,8 +57,12 @@
 
 			echo $response;
 		} else if ( array_key_exists('saveGrade', $_POST) ) {
-			$response = $grade->updateGrade($_POST);
-			header("Location: index.php");
+			$response = [];
+			$response['subjectGrade'] = $grade->updateGrade($_POST);
+			if (array_key_exists('student_grade', $_POST)) {
+				$response['studentGrade'] = $grade->saveStudentGrade($_POST['student_grade']);
+			}
+			header("Location: http://task.site");
 		}
 	}
 ?>
