@@ -1,19 +1,53 @@
 <?php
 	include 'DbConnection.php';
 	include 'Grade.php';
+	$grade = new Grade();
 
 	if ($_SERVER['REQUEST_METHOD'] === "POST") {
-		$gradeData['student_id'] = $_POST['student_id'];
-		$gradeData['chemistry'] = $_POST['chemistry'];
-		$gradeData['maths'] = $_POST['maths'];
-		$gradeData['physics'] = $_POST['physics'];
+		if ( array_key_exists('subjectFilter', $_POST) ) {
+			$response = "<ul>";
+			if ($_POST['chemistry']) {
+				$response .= '<li>Chemistry &nbsp; : -
+									<span class="y-1">
+										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="G"> G
+										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="V"> V
+										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="E"> E
+										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="A"> A
+										<input type="radio" name="chemistry['.$_POST["studentId"].']" value="F"> F
+									</span>
+								</li>';
+			}
 
-		$grade = new Grade();
-		$response = $grade->updateGrade($gradeData);
-		if ($response) {
-			echo json_encode($response);
-		} else {
-			echo json_encode($response);
+			if($_POST['maths']) {
+				$response .= '<li>Maths &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : -
+									<span class="y-1">
+										<input type="radio" name="maths['.$_POST["studentId"].']" value="G"> G
+										<input type="radio" name="maths['.$_POST["studentId"].']" value="V"> V
+										<input type="radio" name="maths['.$_POST["studentId"].']" value="E"> E
+										<input type="radio" name="maths['.$_POST["studentId"].']" value="A"> A
+										<input type="radio" name="maths['.$_POST["studentId"].']" value="F"> F
+									</span>
+								</li>';
+			}
+
+			
+			if($_POST['physics']) {
+				$response .= '<li>Physics &nbsp;&nbsp;&nbsp;&nbsp; : -
+									<span class="y-1">
+										<input type="radio" name="physics['.$_POST["studentId"].']" value="G"> G
+										<input type="radio" name="physics['.$_POST["studentId"].']" value="V"> V
+										<input type="radio" name="physics['.$_POST["studentId"].']" value="E"> E
+										<input type="radio" name="physics['.$_POST["studentId"].']" value="A"> A
+										<input type="radio" name="physics['.$_POST["studentId"].']" value="F"> F
+									</span>
+								</li>';
+			}
+
+			$response .= "</ul>";
+			echo $response;
+		} else if ( array_key_exists('saveGrade', $_POST) ) {
+			$response = $grade->updateGrade($_POST);
+			header("Location: index.php");
 		}
 	}
 ?>

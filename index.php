@@ -41,25 +41,31 @@
 			<button class="btn btn-primary" style="width: max-content;" data-toggle="modal" data-target="#addStudentModel">Add Student</button>
 		</div>
 		<div class="my-4">
-			<table class="table">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Action</th>
-				</tr>
-				<?php foreach($studentData as $key => $s) { ?>
-				<tr>
-					<td><?=$s['id'] ?></td>
-					<td><?=$s['name'] ?></td>
-					<td><?=$s['email'] ?></td>
-					<td>
-						<button class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-<?=$s['id'] ?>">View Grades</button>
-						<button class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal-edit-<?=$s['id'] ?>">Edit Grades</button>
-					</td>
-				</tr>
+			<form action="updateGrade.php" method="POST">
+				<table class="table">
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Grade</th>
+						<th>Action</th>
+					</tr>
+					<?php foreach($studentData as $key => $s) { ?>
+					<tr>
+						<td><?=$s['id'] ?></td>
+						<td class="d-flex flex-column">
+							<?=$s['name'] ?>
+							<span class="btn btn-primary" style="width:max-content" data-toggle="modal" data-target="#subjectFilter-<?=$s['id'] ?>">Select subject</span>
+						</td>
+						<td id="subject-div-<?=$s['id'] ?>">-</td>
+						<td>
+							<span class="btn btn-danger">Remove</button>
+						</td>
+					</tr>
 					<?php } ?>
-			</table>
+				</table>
+				<input type="submit" name="subjectFilterSubmit" id="subjectFilterSubmit" class="btn btn-success" value="Save Data">
+				<input type="hidden" name="saveGrade" value="true">
+			</form>
 		</div>
 	</section>
 
@@ -152,138 +158,69 @@
 		    </div>
 		  </div>
 		</div>
-	</section>
 
-	<!-- grade show modal -->
-	<section>
+		<!-- subject filter -->
 	<?php foreach($studentData as $key => $s) { ?>
-		<div class="modal fade" id="modal-<?=$s['id']?>" tabindex="-1" role="dialog" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
+		<div class="modal fade" id="subjectFilter-<?=$s['id'] ?>" tabindex="-1" aria-hidden="true">
+		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title">Grades - <?=$s['name']?></h5>
+		        <h5 class="modal-title">Filter Subject-<?=$s['name'] ?> </h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      	<table class="table">
-		      		<tr>
-		      			<th class="text-center">#</th>
-		      			<th class="text-center">Chemistry</th>
-		      			<th class="text-center">Maths</th>
-		      			<th class="text-center">Physics</th>
-		      		</tr>
-		      		<?php foreach ($grade->getGradeById($s['id']) as $key => $subject){ ?>
-		      		<tr>
-		      			<td class="text-center"><?=$subject['id']?></td>
-		      			<td class="text-center"><?=$subject['chemistry']?></td>
-		      			<td class="text-center"><?=$subject['maths']?></td>
-		      			<td class="text-center"><?=$subject['physics']?></td>
-		      		</tr>
-		      		<?php } ?>
-		      	</table>
-		      </div>
-		      <div class="modal-footer">
-		      	<p class="w-100 text-center"><small class="">G – Good, V – Very Good, E – Excellent, A – Average, F – Fail, N – Not set</small></p>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<?php } ?>
-	</section>
-
-	<!-- grade edit modal -->
-	<section>
-	<?php foreach($studentData as $key => $s) { ?>
-		<div class="modal fade" id="modal-edit-<?=$s['id']?>" tabindex="-1" role="dialog" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">Edit Grades - <?=$s['name']?></h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		     	<form id="edit-grade-<?=$s['id']?>">
-		     		<table class="table">
-		     			<tr>
-		     				<th>Subject</th>
-		     				<th>Grade</th>
-		     			</tr>
-		     			<tr>
-		     				<td>Chemistry</td>
-		     				<td>
-		     					<select name="chemistry" class="form-control">
-		     							<option value="N">Select grade</option>
-		     							<option value="G">Good</option>
-		     							<option value="V">Very Good</option>
-		     							<option value="E">Excellent</option>
-		     							<option value="A">Average</option>
-		     							<option value="F">Fail</option>
-		     					</select>
-		     				</td>
-		     			</tr>
-		     			<tr>
+		        <form id="subject-form-<?=$s['id']?>">
+					<table class="table">
+						<tr>
+							<th>Select</th>
+							<th>ID</th>
+							<th>Name</th>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="chemistry"></td>
+							<td>1</td>
+							<td>Chemistry</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="maths"></td>
+							<td>2</td>
 							<td>Maths</td>
-							<td>
-								<select name="maths" class="form-control">
-		     							<option value="N">Select grade</option>
-		     							<option value="G">Good</option>
-		     							<option value="V">Very Good</option>
-		     							<option value="E">Excellent</option>
-		     							<option value="A">Average</option>
-		     							<option value="F">Fail</option>
-		     					</select>
-							</td>
-		     			</tr>
-		     			<tr>
-							<td>Physics</td>
-							<td>
-								<select name="physics" class="form-control">
-		     							<option value="N">Select grade</option>
-		     							<option value="G">Good</option>
-		     							<option value="V">Very Good</option>
-		     							<option value="E">Excellent</option>
-		     							<option value="A">Average</option>
-		     							<option value="F">Fail</option>
-		     					</select>
-							</td>
-		     			</tr>
-		     		</table>
-		     		<input type="hidden" name="student_id" value="<?=$s['id']?>">
-		     		<div class="d-flex justify-content-center align-items-center">
-		     			<button class="btn btn-primary w-50">Save Grades</button>
-		     		</div>
-		     	</form>
-		     	<script type="text/javascript">
-		     		$('#edit-grade-<?=$s['id']?>').submit(function (e) {
-		     			e.preventDefault();
-		     			$.ajax({
-		     				url : 'updateGrade.php',
-		     				method : "POST",
-		     				data : $(this).serialize(),
-		     				success : function (response) {
-								let data = jQuery.parseJSON(response);
-								if (data.status == true) {
-									alert('Saved')
-								} else {
-									alert('Data not saved');
-								}
-		     				}
-		     			});
-		     		});
-		     	</script>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="physics"></td>
+							<td>3</td>
+							<td>physics</td>
+						</tr>
+					</table>
+					<input type="hidden" name="studentId" value="<?=$s['id']?>">
+					<input type="hidden" name="subjectFilter" value="true">
+
+					<div class="d-flex justify-content-center flex-column align-items-center">
+				  		<button type="submit" class="btn btn-primary my-2 w-50">Filter</button>
+				  		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				  </div>
+				</form>
 		      </div>
 		    </div>
 		  </div>
 		</div>
+		<script type="text/javascript">
+			$("#subject-form-<?=$s['id']?>").submit(function (e) {	
+				e.preventDefault();
+				$.ajax({
+				    url: 'updateGrade.php',
+				    method: "POST",
+				    data: $(this).serialize(),
+				    success: function (response) {
+						$("#subject-div-<?=$s['id'] ?>").html(response)
+				    }
+				});
+			});
+		</script>
 	<?php } ?>
 	</section>
+
 </body>
 </html>

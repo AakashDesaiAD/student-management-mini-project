@@ -40,20 +40,40 @@
 
 	   	public function updateGrade($data)
 	    {
-	    	$sid = $data['student_id'];
-		    $ch = $data['chemistry'];
-		    $mt = $data['maths'];
-		    $ph = $data['physics']; 
+	    	$log = [];
+	    	if (array_key_exists('chemistry', $data)) {
+				foreach ($data['chemistry'] as $studentId => $grade) {
+					$query = "UPDATE grades SET chemistry = '{$grade}' WHERE student_id = {$studentId}";
+	        		if ($this->connection->query($query) == TRUE) {
+	        			$log['chemistry'][$studentId] = "Grade set to ".$grade;
+	        		} else {
+	        			$log['chemistry'][$studentId] = $this->connection->error;
+	        		}
+				}
+			}
 
-	    	$response = false;
-	    	$query = "UPDATE grades SET chemistry = '{$ch}', maths = '{$mt}', physics = '{$ph}' WHERE student_id = {$sid};";
-	        if ($this->connection->query($query) == true) {
-	        	$response['status'] = true;
-	        } else {
-	        	$response['status'] = false;
-	    		$response['log'] = $this->connection->error;
-	        }
-	        return $response;
+			if (array_key_exists('maths', $data)) {
+				foreach ($data['maths'] as $studentId => $grade) {
+					$query = "UPDATE grades SET maths = '{$grade}' WHERE student_id = {$studentId}";
+					if ($this->connection->query($query) == TRUE) {
+	        			$log['maths'][$studentId] = "Grade set to ".$grade;
+	        		} else {
+	        			$log['maths'][$studentId] = $this->connection->error;
+	        		}
+	        	}
+			}
+
+			if (array_key_exists('physics', $data)) {
+				foreach ($data['physics'] as $studentId => $grade) {
+					$query = "UPDATE grades SET physics = '{$grade}' WHERE student_id = {$studentId}";
+	        		if ($this->connection->query($query) == TRUE) {
+	        			$log['physics'][$studentId] = "Grade set to ".$grade;
+	        		} else {
+	        			$log['physics'][$studentId] = $this->connection->error;
+	        		}
+				}
+			}
+			return $log;
 	    }
 	}
 ?>
