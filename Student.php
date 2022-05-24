@@ -1,6 +1,5 @@
 <?php
 	include 'DbConnection.php';
-	include 'Grade.php';
 
 	class Student extends DbConnection
 	{
