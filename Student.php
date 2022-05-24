@@ -45,8 +45,6 @@
 
 	    public function insertStudent($data)
 	    {
-	    	$grade = new Grade();
-	    	$gradeData = [];
 
 	    	$response = [];
 	    	$name = $data['studentName'];
@@ -58,15 +56,41 @@
 	    	$sql = "INSERT INTO student (id, name, class, phone, gender, email) VALUES (NULL, '{$name}', '{$stClass}', '{$phone}', '{$gender}', '{$email}')";
 
 	    	if ($this->connection->query($sql) === TRUE) {
-		    	$gradeData['student_id'] = $this->connection->insert_id;
-		    	$gradeData['chemistry'] = 'N';
-		    	$gradeData['maths'] = 'N';
-		    	$gradeData['physics'] = 'N';
-
-		    	$response['status'] = $grade->insertGrade($gradeData);
+	    		$response['status'] = true;
 	    	} else {
 	    		$response['status'] = false;
 	    		$response['log'] = $this->connection->error;
+	    	}
+	    	return $response;
+	    }
+
+	    public function saveStudentGrade($data)
+	    {	
+	    	$response = [];
+	    	foreach ($data as $id => $grade) {
+				$sql = "UPDATE student SET grade = '{$grade}' WHERE id = {$id}";
+				if ($this->connection->query($sql) == TRUE) {
+					$response[$id] = "Success";
+				} else {
+					$response[$id] = $this->connection->error;
+				}
+	    	}
+	    	return $response;
+	    }
+
+	    public function saveGrade($data)
+	    {
+	    	$response = [];
+	    	$id = $data['student_id'];
+	    	foreach ($data['subjects'] as $key => $value) {
+	    		$grade = $value['grade'];
+	    		$subject = $value['subjectName'];
+	    		$sql = "INSERT INTO grades (id, subject_name, grade, student_id) VALUES (NULL, '{$subject}', '{$grade}', {$id})";
+	    		if ($this->connection->query($sql) == TRUE) {
+					$response[$subject] = "Success";
+				} else {
+					$response[$subject] = $this->connection->error;
+				}
 	    	}
 	    	return $response;
 	    }

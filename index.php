@@ -4,7 +4,6 @@
 	error_reporting(E_ALL);
 
 	include 'Student.php';
-	$grade = new Grade();
 	$student = new Student();
 	$studentData = [];
 	$studentFilter = false;
@@ -163,46 +162,31 @@
 		  </div>
 		</div>
 
-		<!-- subject filter -->
+		<!-- Add filter -->
 	<?php foreach($studentData as $key => $s) { ?>
 		<div class="modal fade" id="subjectFilter-<?=$s['id'] ?>" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title">Filter Subject-<?=$s['name'] ?> </h5>
+		        <h5 class="modal-title">Add Subject for <?=$s['name'] ?> </h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body">
 		        <form id="subject-form-<?=$s['id']?>">
-					<table class="table">
-						<tr>
-							<th>Select</th>
-							<th>ID</th>
-							<th>Name</th>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="chemistry"></td>
-							<td>1</td>
-							<td>Chemistry</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="maths"></td>
-							<td>2</td>
-							<td>Maths</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="physics"></td>
-							<td>3</td>
-							<td>physics</td>
-						</tr>
-					</table>
+		        	<table>
+		        		<tr>
+		        			<th>Subject name</th>
+		        			<td><input type="text" name="subjectName" class="form-control" required></td>
+		        		</tr>
+		        	</table>
 					<input type="hidden" name="studentId" value="<?=$s['id']?>">
+					<input type="hidden" id="count-<?=$s['id']?>" value=1>
 					<input type="hidden" name="subjectFilter" value="true">
 
 					<div class="d-flex justify-content-center flex-column align-items-center">
-				  		<button type="submit" class="btn btn-primary my-2 w-50">Filter</button>
+				  		<button type="submit" class="btn btn-primary my-2 w-50">Add</button>
 				  		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				  </div>
 				</form>
@@ -218,7 +202,10 @@
 				    method: "POST",
 				    data: $(this).serialize(),
 				    success: function (response) {
+				    	let count = $("#count-<?=$s['id']?>").val();
+				    	let newCount = $("#count-<?=$s['id']?>").val(parseInt(count)+1);
 						$("#subject-div-<?=$s['id']?>").after(response)
+				    	$("#subjectName-<?=$s['id']?>").html('Subject - '+ count);
 				    }
 				});
 			});
